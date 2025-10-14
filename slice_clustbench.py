@@ -4,6 +4,9 @@ import urllib.error
 import os
 import sys
 
+import certifi
+import ssl
+
 # This is the 1.1.0 release from 2022
 COMMIT = "0812ac3c3d3b9cb458dd9a6eca97db44cbd93339"
 BASE_URL = f"https://github.com/gagolews/clustering-data-v1/raw/{COMMIT}"
@@ -26,8 +29,10 @@ def download_file(url: str, dest_path: str, chunk_size: int = 8192) -> None:
     if not url or not dest_path:
         raise ValueError("URL and destination path must be provided.")
 
+    ctx = ssl.create_default_context(cafile=certifi.where())
+
     try:
-        with urllib.request.urlopen(url) as response, open(dest_path, 'wb') as out_file:
+        with urllib.request.urlopen(url, context=ctx) as response, open(dest_path, 'wb') as out_file:
             while chunk := response.read(chunk_size):
                 out_file.write(chunk)
         print(f"File successfully downloaded to {dest_path}")
