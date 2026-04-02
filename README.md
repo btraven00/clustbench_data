@@ -12,3 +12,4 @@ It downloads both data and labels with filenames following the encoding:
 - for labels: `os.path.join(args.output_dir, f"{generator}_{name}.labels0.gz")`
 
 test test
+more test
